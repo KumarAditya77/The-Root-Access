@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReTool Market — Buy & Sell Refurbished Tech</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="app-header">
+        <div class="brand">
+            <div class="logo" aria-hidden="true">♻️</div>
+            <div>
+                <h1>The Root Access </h1>
+                <p>Sell, refurbish, and buy affordable tech</p>
+            </div>
+        </div>
+        <div class="header-actions">
+            <label class="switch" title="Refurbisher Mode">
+                <input type="checkbox" id="refurbisherToggle" />
+                <span class="slider"></span>
+            </label>
+            <button id="resetDataBtn" class="btn" title="Reset demo data">Reset Demo Data</button>
+            <button id="openSellModalBtn" class="btn primary">Sell an Item</button>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="controls" aria-label="Filters and Sorting">
+            <div class="control-row">
+                <div class="field">
+                    <label for="searchInput">Search</label>
+                    <input id="searchInput" type="search" placeholder="Search phones, laptops, tablets..." />
+                </div>
+                <div class="field">
+                    <label for="categorySelect">Category</label>
+                    <select id="categorySelect">
+                        <option value="">All</option>
+                        <option value="phone">Phone</option>
+                        <option value="laptop">Laptop</option>
+                        <option value="tablet">Tablet</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="conditionSelect">Condition</label>
+                    <select id="conditionSelect">
+                        <option value="">Any</option>
+                        <option value="as-is">As-Is</option>
+                        <option value="used-good">Used (Good)</option>
+                        <option value="refurbished">Refurbished</option>
+                    </select>
+                </div>
+                <div class="field inline">
+                    <label>Price</label>
+                    <div class="inline-inputs">
+                        <input id="minPrice" type="number" min="0" placeholder="Min" />
+                        <span>–</span>
+                        <input id="maxPrice" type="number" min="0" placeholder="Max" />
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="sortSelect">Sort by</label>
+                    <select id="sortSelect">
+                        <option value="newest">Newest</option>
+                        <option value="price-asc">Price: Low to High</option>
+                        <option value="price-desc">Price: High to Low</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>&nbsp;</label>
+                    <button id="clearFiltersBtn" class="btn">Clear</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="listings" aria-live="polite" aria-busy="false">
+            <div id="emptyState" class="empty" hidden>
+                <div class="emoji">🔍</div>
+                <h3>No items found</h3>
+                <p>Try adjusting your filters, or be the first to list an item.</p>
+                <button id="emptySellBtn" class="btn primary">Sell an Item</button>
+            </div>
+            <div id="grid" class="grid"></div>
+        </section>
+
+        <section class="info" id="bootloader-unlocking" aria-labelledby="bootloaderTitle">
+            <h2 id="bootloaderTitle">Bootloader Unlocking: Brand Policies, Checks, and Warnings</h2>
+
+            <h3>Brands / device families that commonly allow unlocking</h3>
+            <ul>
+                <li><strong>Google Pixel (Pixel series)</strong> — retail/unlocked models are often unlockable via fastboot; carrier-branded models are frequently restricted. <a href="https://source.android.com" target="_blank" rel="noreferrer noopener">Android Open Source Project</a></li>
+                <li><strong>OnePlus</strong> — officially supported on most global retail units. Follow the vendor guide. <a href="https://www.oneplus.com/support" target="_blank" rel="noreferrer noopener">OnePlus</a></li>
+                <li><strong>Xiaomi / Redmi / POCO</strong> — typically via Mi account + request; policies tightened with some HyperOS updates. Check model-specific rules. <a href="https://c.mi.com" target="_blank" rel="noreferrer noopener">Xiaomi Community</a></li>
+                <li><strong>Sony Xperia</strong> — official tools/docs for many models; some exceptions. <a href="https://developer.sony.com/develop/open-devices/get-started/unlock-bootloader" target="_blank" rel="noreferrer noopener">Sony Developer Portal</a></li>
+                <li><strong>Motorola (Lenovo/Moto)</strong> — many older/unbranded devices were unlockable via Motorola’s dev process; carrier variants often not. Varies by model/region. <a href="https://forums.lenovo.com/" target="_blank" rel="noreferrer noopener">Lenovo Community</a></li>
+                <li><strong>ASUS (Zenfone / ROG Phone)</strong> — many global/dev models allow unlocking; verify on vendor pages or device threads. <a href="https://forum.xda-developers.com/" target="_blank" rel="noreferrer noopener">XDA Forums</a></li>
+                <li><strong>HTC</strong> — historically supported for some unlocked models; varies. <a href="https://www.wired.com/" target="_blank" rel="noreferrer noopener">WIRED</a></li>
+                <li><strong>Other brands (some Oppo, Realme, older Honor/Huawei)</strong> — mixed; account-based procedures or blocks on newer firmware are common. <a href="https://www.reddit.com/r/Android/" target="_blank" rel="noreferrer noopener">Reddit</a></li>
+            </ul>
+
+            <h3>Brands/lines to be cautious about (often locked)</h3>
+            <ul>
+                <li><strong>Samsung</strong> — model/region/SoC dependent. U.S. carrier models typically locked; some international Exynos models historically unlockable. Recent policy changes suggest reduced OEM-unlock availability; verify your exact model and firmware. <a href="https://www.theverge.com/" target="_blank" rel="noreferrer noopener">The Verge</a></li>
+                <li><strong>Huawei / Honor (newer models)</strong> — many newer models are not unlockable or lack official codes. <a href="https://android.gadgethacks.com/" target="_blank" rel="noreferrer noopener">Gadget Hacks</a></li>
+            </ul>
+
+            <h3>How to check a specific device (fast checks)</h3>
+            <ul>
+                <li>Look for <strong>OEM unlocking</strong> in Developer Options: Settings → About → tap Build number → Developer options. Presence of the toggle is a good sign (not a guarantee). <a href="https://source.android.com" target="_blank" rel="noreferrer noopener">AOSP</a></li>
+                <li>Reboot to bootloader and run <code>fastboot oem device-info</code> or <code>fastboot flashing unlock</code>. Flags can indicate unlockability. <a href="https://source.android.com" target="_blank" rel="noreferrer noopener">AOSP</a></li>
+                <li>Check vendor developer/unlock pages or device-specific community threads. <a href="https://forum.xda-developers.com/" target="_blank" rel="noreferrer noopener">XDA Forums</a> · <a href="https://www.oneplus.com/support" target="_blank" rel="noreferrer noopener">OnePlus</a> · <a href="https://developer.sony.com/develop/open-devices/get-started/unlock-bootloader" target="_blank" rel="noreferrer noopener">Sony Developer Portal</a></li>
+            </ul>
+
+            <h3>Important warnings</h3>
+            <ul>
+                <li><strong>Warranty / Safety / FRP</strong>: Unlocking often voids warranty, can interact with FRP/anti-rollback/secure boot protections, and may brick devices if mixed firmware is flashed. Read vendor warnings. <a href="https://source.android.com" target="_blank" rel="noreferrer noopener">AOSP</a></li>
+                <li><strong>Carrier models</strong>: Phones bought from carriers (e.g., Verizon/AT&amp;T) are frequently not unlockable.</li>
+                <li><strong>Policy changes</strong>: OEM policies change frequently; always confirm for your exact model and firmware date. <a href="https://www.theverge.com/" target="_blank" rel="noreferrer noopener">The Verge</a></li>
+                <li><strong>Xiaomi wait vs. wipe</strong>: Mi Unlock often enforces a wait period, but the <em>data wipe occurs at the unlock step</em> itself (immediate or after the wait, depending on account/device age).</li>
+                <li><strong>Fairphone and others</strong>: Many OEMs explicitly warn that unlocking permanently erases data and may disable security features; warranty implications vary.</li>
+            </ul>
+
+            <h3>Security implications after unlocking</h3>
+            <ul>
+                <li>Unlocking disables Verified Boot/boot integrity checks, enabling persistent tampering risk.</li>
+                <li>With an unlocked bootloader, physical access attacks become easier (e.g., flashing modified recovery/system to persist malware).</li>
+            </ul>
+
+            <h3>Practical guidance</h3>
+            <ul>
+                <li><strong>Back up everything</strong> off-device before unlocking; internal data will be lost. Prepare to re-enroll accounts/MFA/banking apps afterwards.</li>
+                <li>If flashing is the goal, <strong>unlock only when ready</strong>, perform required flashes, then consider <strong>re-locking</strong> with trusted, properly signed images to restore Verified Boot where supported.</li>
+            </ul>
+
+            <h3>Commands and flow (generic)</h3>
+            <ol>
+                <li>Enable <strong>OEM unlocking</strong> in Developer options.</li>
+                <li>Reboot to bootloader.</li>
+                <li>Use <code>fastboot flashing unlock</code> (or the OEM tool). The device will prompt and then perform a factory reset before setting the unlock state.</li>
+                <li><strong>Samsung note</strong>: Uses Odin for flashing; enabling OEM unlock is still relevant, but process differs and Knox/policy implications apply per model.</li>
+            </ol>
+
+            <h3>Bottom line</h3>
+            <ul>
+                <li>Expect a <strong>full data wipe</strong> when the bootloader is actually unlocked. Always back up first.</li>
+                <li>Post-unlock, the device is more exposed to low-level tampering. <strong>Relock when possible</strong> after flashing trusted firmware to reduce ongoing risk.</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <p>Built for circular tech economy • Local demo (no server)</p>
+    </footer>
+
+    <!-- Sell Modal -->
+    <dialog id="sellModal" class="modal">
+        <form id="sellForm" method="dialog">
+            <header>
+                <h2>Sell an Item</h2>
+                <button type="button" class="icon-btn" id="closeSellModal" aria-label="Close">✕</button>
+            </header>
+            <div class="form-grid">
+                <div class="field">
+                    <label for="titleInput">Title</label>
+                    <input id="titleInput" type="text" required maxlength="80" placeholder="e.g., iPhone 12 128GB" />
+                </div>
+                <div class="field">
+                    <label for="sellCategory">Category</label>
+                    <select id="sellCategory" required>
+                        <option value="phone">Phone</option>
+                        <option value="laptop">Laptop</option>
+                        <option value="tablet">Tablet</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="sellCondition">Condition</label>
+                    <select id="sellCondition" required>
+                        <option value="as-is">As-Is</option>
+                        <option value="used-good">Used (Good)</option>
+                        <option value="refurbished">Refurbished</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="priceInput">Price (doller)</label>
+                    <input id="priceInput" type="number" min="0" step="1" required placeholder="100" />
+                </div>
+                <div class="field">
+                    <label for="sellerContact">Your contact (email/phone)</label>
+                    <input id="sellerContact" type="text" required placeholder="name@example.com" />
+                </div>
+                <div class="field full">
+                    <label for="descInput">Description</label>
+                    <textarea id="descInput" rows="3" maxlength="500" placeholder="Notable issues, battery health, accessories, etc."></textarea>
+                </div>
+                <div class="field">
+                    <label for="imageUrlInput">Image URL (optional)</label>
+                    <input id="imageUrlInput" type="url" placeholder="https://..." />
+                </div>
+                <div class="field">
+                    <label for="imageFileInput">Or upload image</label>
+                    <input id="imageFileInput" type="file" accept="image/*" />
+                </div>
+                <div class="preview" id="imagePreview" aria-label="Image preview" hidden>
+                    <img alt="Preview" id="previewImg" />
+                </div>
+            </div>
+            <menu class="modal-actions">
+                <button type="reset" class="btn">Reset</button>
+                <button type="submit" class="btn primary">List Item</button>
+            </menu>
+        </form>
+    </dialog>
+
+    <!-- Item Detail Modal -->
+    <dialog id="detailModal" class="modal">
+        <div class="detail">
+            <header>
+                <h2 id="detailTitle">Item</h2>
+                <button type="button" class="icon-btn" id="closeDetailModal" aria-label="Close">✕</button>
+            </header>
+            <div class="detail-body">
+                <div class="detail-media">
+                    <img id="detailImage" alt="Item image" />
+                </div>
+                <div class="detail-info">
+                    <div class="chip-row">
+                        <span id="detailCategory" class="chip"></span>
+                        <span id="detailCondition" class="chip"></span>
+                        <span id="detailStatus" class="chip"></span>
+                    </div>
+                    <div class="price" id="detailPrice"></div>
+                    <p id="detailDesc"></p>
+                    <div class="contact" id="detailContact"></div>
+                    <div class="detail-actions">
+                        <button id="requestPurchaseBtn" class="btn primary">Request Purchase</button>
+                        <button id="wishlistBtn" class="btn">Add to Wishlist</button>
+                        <div id="refurbisherActions" class="ref-actions" hidden>
+                            <button id="markRefurbishBtn" class="btn warn">Mark For Refurbish</button>
+                            <button id="markRefurbishedBtn" class="btn success">Mark Refurbished</button>
+                            <button id="recycleBtn" class="btn danger">Recycle</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- Purchase Request Modal -->
+    <dialog id="purchaseModal" class="modal">
+        <form id="purchaseForm" method="dialog">
+            <header>
+                <h2>Request Purchase</h2>
+                <button type="button" class="icon-btn" id="closePurchaseModal" aria-label="Close">✕</button>
+            </header>
+            <div class="form-grid">
+                <div class="field">
+                    <label for="buyerName">Your Name</label>
+                    <input id="buyerName" type="text" required />
+                </div>
+                <div class="field">
+                    <label for="buyerContact">Your Contact</label>
+                    <input id="buyerContact" type="text" required placeholder="email or phone" />
+                </div>
+                <div class="field full">
+                    <label for="buyerNote">Note (optional)</label>
+                    <textarea id="buyerNote" rows="3" placeholder="Pickup time, questions, etc."></textarea>
+                </div>
+            </div>
+            <menu class="modal-actions">
+                <button type="button" class="btn" id="cancelPurchaseBtn">Cancel</button>
+                <button type="submit" class="btn primary">Send Request</button>
+            </menu>
+        </form>
+    </dialog>
+
+    <script src="app.js"></script>
+    <noscript>
+        This app requires JavaScript to run. Please enable JavaScript.
+    </noscript>
+</body>
+</html>
+
+
